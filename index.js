@@ -16,6 +16,7 @@ const client = new MongoClient(uri, {serverApi: { version: ServerApiVersion.v1, 
 
 async function run () {
   try{
+    await client.connect();
     const productCollection = client.db('storage').collection('products');
     app.get('/products', async(req, res) => {
       const query = {}
@@ -26,6 +27,7 @@ async function run () {
       // single product load------------
       app.get('/products/:id', async(req, res) =>{
         const id = req.params.id;
+        console.log(id)
         const query={_id: ObjectId(id)};
         const product = await productCollection.findOne(query);
         res.send(product);
